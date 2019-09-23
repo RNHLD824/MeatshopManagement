@@ -1,13 +1,32 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
+import pymysql
 import Signup
 
 class Ui_Dialog(object):
     def login(self):
         username = self.username_input.text()
         password = self.password_input.text()
-        
-        print (username, password)
-    
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        cursor = conn.cursor()
+        query = "SELECT Username, Password FROM admin"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        accounts = {}
+
+        for account in result:
+            accounts[account[0]] = account[1]
+
+        if username in accounts:
+            for account in accounts:
+                if username == account:
+                    if password == accounts[account]:
+                        QMessageBox.about(self.Dialog, "Login", "Successfully logged in!")
+                    else:
+                        QMessageBox.about(self.Dialog, "Login", "Invalid password!")
+        else:
+            QMessageBox.about(self.Dialog, "Login", "Account does not exist in the database!")
+            
     def signUp(self):
         self.ui = QtWidgets.QMainWindow()
         self.signup = Signup.Ui_Dialog(self.Dialog)
