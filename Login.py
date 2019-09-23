@@ -33,9 +33,14 @@ class Ui_Dialog(object):
         self.signup.setupUi(self.ui)
         self.ui.show()
         self.Dialog.hide()
+
+    def pressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Escape:
+            self.Dialog.close()
     
     def setupUi(self, Dialog):
         self.Dialog = Dialog
+        Dialog.keyPressEvent = self.pressEvent
         Dialog.setObjectName("Dialog")
         Dialog.resize(720, 500)
 
