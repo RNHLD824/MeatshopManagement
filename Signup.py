@@ -80,7 +80,7 @@ class Ui_Dialog(object):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.submit_pushButton.setObjectName("submit_pushButton")
-        self.back_pushButton = QtWidgets.QPushButton(Dialog)
+        self.back_pushButton = QtWidgets.QPushButton(Dialog, clicked=self.goBack)
         self.back_pushButton.setGeometry(QtCore.QRect(310, 430, 101, 31))
         font = QtGui.QFont()
         font.setFamily("Fixedsys")
