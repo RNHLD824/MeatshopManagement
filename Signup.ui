@@ -81,6 +81,25 @@
     <string>Insert Username</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="password_input">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>250</y>
+     <width>361</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="placeholderText">
+    <string>Insert Password</string>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="contact_input">
    <property name="geometry">
     <rect>
@@ -98,25 +117,6 @@
    </property>
    <property name="placeholderText">
     <string>Insert Contact Number</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="password_input">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>250</y>
-     <width>361</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="placeholderText">
-    <string>Inser Password</string>
    </property>
   </widget>
   <widget class="QLabel" name="username_label">
