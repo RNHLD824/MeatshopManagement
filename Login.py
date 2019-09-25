@@ -42,52 +42,66 @@ class Ui_Dialog:
         self.Dialog = Dialog
         Dialog.setObjectName("Dialog")
         Dialog.resize(720, 500)
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Dialog.sizePolicy().hasHeightForWidth())
+
         Dialog.setSizePolicy(sizePolicy)
         Dialog.setMinimumSize(QtCore.QSize(720, 500))
         Dialog.setMaximumSize(QtCore.QSize(720, 500))
+
         self.background = QtWidgets.QLabel(Dialog)
         self.background.setGeometry(QtCore.QRect(0, 0, 720, 500))
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.background.sizePolicy().hasHeightForWidth())
+
         self.background.setSizePolicy(sizePolicy)
         self.background.setMinimumSize(QtCore.QSize(720, 500))
         self.background.setMaximumSize(QtCore.QSize(720, 500))
         self.background.setObjectName("background")
+
         self.usernameInput = QtWidgets.QLineEdit(Dialog)
         self.usernameInput.setGeometry(QtCore.QRect(50, 230, 361, 41))
         self.usernameInput.setStyleSheet("")
         self.usernameInput.setAlignment(QtCore.Qt.AlignCenter)
         self.usernameInput.setObjectName("usernameInput")
+
         self.passwordInput = QtWidgets.QLineEdit(Dialog)
         self.passwordInput.setEchoMode(QtWidgets.QLineEdit.Password)
         self.passwordInput.setGeometry(QtCore.QRect(50, 310, 361, 41))
         self.passwordInput.setAlignment(QtCore.Qt.AlignCenter)
         self.passwordInput.setObjectName("passwordInput")
+
         self.usernameLabel = QtWidgets.QLabel(Dialog)
         self.usernameLabel.setGeometry(QtCore.QRect(520, 240, 121, 31))
+
         font = QtGui.QFont()
         font.setFamily("Big Space")
         font.setPointSize(12)
+
         self.usernameLabel.setFont(font)
         self.usernameLabel.setObjectName("usernameLabel")
         self.passwordLabel = QtWidgets.QLabel(Dialog)
         self.passwordLabel.setGeometry(QtCore.QRect(520, 320, 121, 31))
+
         font = QtGui.QFont()
         font.setFamily("Big Space")
         font.setPointSize(12)
+
         self.passwordLabel.setFont(font)
         self.passwordLabel.setObjectName("passwordLabel")
         self.loginButton = QtWidgets.QPushButton(Dialog, clicked=self.login)
         self.loginButton.setGeometry(QtCore.QRect(520, 380, 101, 31))
+
         font = QtGui.QFont()
         font.setFamily("Fixedsys")
         font.setPointSize(12)
+
         self.loginButton.setFont(font)
         self.loginButton.setStyleSheet("QPushButton {background-color: rgb(255, 38, 38);\n"
 "                        color:rgb(255,255,255);                    \n"
@@ -97,9 +111,11 @@ class Ui_Dialog:
         self.loginButton.setObjectName("loginButton")
         self.signUpButton = QtWidgets.QPushButton(Dialog, clicked=self.signUp)
         self.signUpButton.setGeometry(QtCore.QRect(520, 420, 101, 31))
+
         font = QtGui.QFont()
         font.setFamily("Fixedsys")
         font.setPointSize(12)
+
         self.signUpButton.setFont(font)
         self.signUpButton.setStyleSheet("QPushButton {background-color: rgb(255, 38, 38);\n"
 "                        color:rgb(255,255,255);                    \n"
