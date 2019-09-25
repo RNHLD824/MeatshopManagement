@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QMessageBox
+import pymysql, signup_source_rc
 
 class Ui_Dialog(object):
 
@@ -9,6 +10,49 @@ class Ui_Dialog(object):
     def goBack(self):
         self.Dialog.hide()
         self.login.show()
+        return None
+
+    def checkAccount(self, username):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT Username, Password FROM admin"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            accounts = {}
+            for account in result:
+                accounts[account[0]] = account[1]
+            if username in accounts:
+                return 1
+            else:
+                return 0
+        return 0
+        
+    def submitAccount(self):
+        username = self.username_input.text()
+        password = self.password_input.text()
+        contact = self.contact_input.text()
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        try:
+            with conn:
+                cursor = conn.cursor()
+                if username != "" and password != "" and contact != "":
+                    if self.checkAccount(username):
+                        QMessageBox.about(self.Dialog, "Sign Up", "Username already exists!")
+                        return None
+                    else:
+                        QMessageBox.about(self.Dialog, "Sign Up", "Account created successfully!")
+                        query = "INSERT INTO admin VALUES ('{0}', '{1}', '{2}')".format(username, password, contact)
+                        self.goBack()
+                    cursor.execute(query)
+                    conn.commit()
+                    cursor.close()
+                else:
+                    QMessageBox.about(self.Dialog, "Sign Up", "Please fill all the blank!")
+        except:
+            print("Error!")
+            return None
+        return None
     
     def setupUi(self, Dialog):
         self.Dialog = Dialog
@@ -85,7 +129,7 @@ class Ui_Dialog(object):
         self.contact_label.setFont(font)
         self.contact_label.setObjectName("contact_label")
 
-        self.submit_pushButton = QtWidgets.QPushButton(Dialog)
+        self.submit_pushButton = QtWidgets.QPushButton(Dialog, clicked=self.submitAccount)
         self.submit_pushButton.setGeometry(QtCore.QRect(310, 390, 101, 31))
 
         font = QtGui.QFont()
@@ -116,6 +160,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        return None
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -129,8 +174,7 @@ class Ui_Dialog(object):
         self.contact_label.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; color:#ff2020;\">CONTACT</span></p></body></html>"))
         self.submit_pushButton.setText(_translate("Dialog", "Submit"))
         self.back_pushButton.setText(_translate("Dialog", "Back"))
-import signup_source_rc
-
+        return None
 
 if __name__ == "__main__":
     import sys
