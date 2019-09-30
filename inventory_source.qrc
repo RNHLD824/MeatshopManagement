@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="inv_src">
+    <file>mainwindow.jpg</file>
+  </qresource>
+</RCC>
