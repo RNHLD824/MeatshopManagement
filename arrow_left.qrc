@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="arr_left">
+    <file>Arrow_left.PNG</file>
+  </qresource>
+</RCC>

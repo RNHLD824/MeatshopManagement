@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="trans_src">
+    <file>mainwindow2.jpg</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>850</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>850</width>
+    <height>500</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>850</width>
+    <height>500</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>850</width>
+      <height>500</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>850</width>
+      <height>500</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>850</width>
+      <height>500</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/trans_src/mainwindow2.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="beef_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>180</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Big Space</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: rgb(255, 38, 38);
+						color:rgb(255,255,255);					
+}
+QPushButton:hover {background-color: rgb(218, 167, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string>BEEF</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="chicken_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Big Space</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: rgb(255, 38, 38);
+						color:rgb(255,255,255);					
+}
+QPushButton:hover {background-color: rgb(218, 167, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string>CHICKEN</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pork_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Big Space</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: rgb(255, 38, 38);
+						color:rgb(255,255,255);					
+}
+QPushButton:hover {background-color: rgb(218, 167, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string>PORK</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="products_table">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>120</y>
+      <width>301</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableWidget  {background-color: rgb(255, 38, 38);
+						border: none;
+						color:rgb(255,255,255);
+						gridline-color:rgb(255,255,255);
+}
+QHeaderView:section {border:none
+									color:rgb(255,255,255);
+}
+QWidget {border:none
+				color:rgb(255, 255, 255);
+}</string>
+    </property>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Eras Demi ITC</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Price</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Eras Demi ITC</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Stock</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Eras Demi ITC</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </column>
+   </widget>
+   <widget class="QTableWidget" name="orders_table">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>120</y>
+      <width>301</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableWidget  {background-color: rgb(255, 38, 38);
+						border: none;
+						color:rgb(255,255,255);
+						gridline-color:rgb(255,255,255);
+}
+QHeaderView:section {border:none
+									color:rgb(255,255,255);
+}
+QWidget {border:none
+				color:rgb(255, 255, 255);
+}</string>
+    </property>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Eras Demi ITC</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Price</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Eras Demi ITC</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Stock</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Eras Demi ITC</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="add_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>210</y>
+      <width>91</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Eras Demi ITC</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color: transparent;
+background-image: url(:/arr_right/Arrow_right.PNG);}</string>
+    </property>
+    <property name="text">
+     <string>     ADD</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="remove_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>300</y>
+      <width>91</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Eras Demi ITC</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color: transparent;
+background-image: url(:/arr_left/Arrow_left.PNG);}</string>
+    </property>
+    <property name="text">
+     <string>REMOVE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="submit_pushbutton">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>70</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Big Space</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: rgb(255, 38, 38);
+						color:rgb(255,255,255);					
+}
+QPushButton:hover {background-color: rgb(218, 167, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string>SUBMIT</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="logout_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Fixedsys</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: rgb(255, 38, 38);
+						color:rgb(255,255,255);								
+}
+QPushButton:hover {background-color: rgb(218, 167, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string>Log Out</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="logout_pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Fixedsys</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {background-color: rgb(255, 38, 38);
+						color:rgb(255,255,255);								
+}
+QPushButton:hover {background-color: rgb(218, 167, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string>Inventory</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="transaction_source.qrc"/>
+  <include location="arrow_left.qrc"/>
+  <include location="arrow_right.qrc"/>
+ </resources>
+ <connections/>
+</ui>
