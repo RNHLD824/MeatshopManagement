@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>transactionWindow</class>
+ <widget class="QMainWindow" name="transactionWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -350,7 +350,7 @@ QPushButton:hover {background-color: rgb(218, 167, 0);
      <string>Log Out</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="logout_pushButton_2">
+   <widget class="QPushButton" name="inventory_pushButton">
     <property name="geometry">
      <rect>
       <x>10</x>

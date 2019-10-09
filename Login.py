@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 import pymysql, Signup
+from Transaction import Ui_transactionWindow
 
 class Ui_Dialog:
 
@@ -22,10 +23,16 @@ class Ui_Dialog:
                 if username == account:
                     if password == accounts[account]:
                         QMessageBox.about(self.Dialog, "Login", "Successfully logged in!")
+                        self.mainwindow = QtWidgets.QMainWindow()
+                        self.uimain = Ui_transactionWindow()
+                        self.uimain.setupUi(self.mainwindow)
+                        self.mainwindow.show()
                     else:
                         QMessageBox.about(self.Dialog, "Login", "Invalid password!")
         else:
             QMessageBox.about(self.Dialog, "Login", "Account does not exist in the database!")
+
+        self.this_window.hide()        
             
     def signUp(self):
         self.ui = QtWidgets.QMainWindow()
@@ -36,12 +43,14 @@ class Ui_Dialog:
 
     def pressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
-            self.Dialog.close()
+            self.Dialog.close() 
     
     def setupUi(self, Dialog):
         self.Dialog = Dialog
         Dialog.setObjectName("Dialog")
         Dialog.resize(720, 500)
+
+        self.this_window = Dialog
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)

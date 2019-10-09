@@ -1,41 +1,20 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
-from Add import Ui_addWindow
-from Update import Ui_updateWindow
 
-class Ui_inventoryWindow(QMainWindow):
-
-    def toAdd(self):
-        self.add = QtWidgets.QMainWindow()
-        self.ui = Ui_addWindow()
-        self.ui.setupUi(self.add) 
-        self.add.show()
-        self.this_window.hide()
-
-    def toUpdate(self):
-        self.update = QtWidgets.QMainWindow()
-        self.ui = Ui_updateWindow()
-        self.ui.setupUi(self.update) 
-        self.update.show()
-        self.this_window.hide()
-    
-    def setupUi(self, inventoryWindow):
-
-        self.this_window = inventoryWindow
-        
-        inventoryWindow.setObjectName("inventoryWindow")
-        inventoryWindow.resize(720, 500)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(720, 500)
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(inventoryWindow.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
 
-        inventoryWindow.setSizePolicy(sizePolicy)
-        inventoryWindow.setMinimumSize(QtCore.QSize(720, 500))
-        inventoryWindow.setMaximumSize(QtCore.QSize(720, 500))
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QtCore.QSize(720, 500))
+        MainWindow.setMaximumSize(QtCore.QSize(720, 500))
 
-        self.centralwidget = QtWidgets.QWidget(inventoryWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -65,7 +44,6 @@ class Ui_inventoryWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.beef_pushbutton.setObjectName("beef_pushbutton")
-
         self.chicken_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.chicken_pushbutton.setGeometry(QtCore.QRect(49, 270, 101, 41))
 
@@ -125,7 +103,6 @@ class Ui_inventoryWindow(QMainWindow):
         font.setPointSize(11)
 
         item.setFont(font)
-
         self.inventory_table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
 
@@ -142,8 +119,8 @@ class Ui_inventoryWindow(QMainWindow):
         font.setPointSize(11)
 
         item.setFont(font)
-        self.inventory_table.setHorizontalHeaderItem(2, item)
 
+        self.inventory_table.setHorizontalHeaderItem(2, item)
         self.add_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.add_pushbutton.setGeometry(QtCore.QRect(570, 190, 101, 41))
 
@@ -158,8 +135,6 @@ class Ui_inventoryWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.add_pushbutton.setObjectName("add_pushbutton")
-        self.add_pushbutton.clicked.connect(self.toAdd)
-
         self.update_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.update_pushbutton.setGeometry(QtCore.QRect(570, 270, 101, 41))
 
@@ -174,8 +149,6 @@ class Ui_inventoryWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.update_pushbutton.setObjectName("update_pushbutton")
-        self.update_pushbutton.clicked.connect(self.toUpdate)
-
         self.delete_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.delete_pushbutton.setGeometry(QtCore.QRect(570, 350, 101, 41))
 
@@ -190,7 +163,6 @@ class Ui_inventoryWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.delete_pushbutton.setObjectName("delete_pushbutton")
-
         self.back_pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.back_pushButton.setGeometry(QtCore.QRect(20, 20, 101, 31))
 
@@ -204,37 +176,37 @@ class Ui_inventoryWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.back_pushButton.setObjectName("back_pushButton")
-        inventoryWindow.setCentralWidget(self.centralwidget)
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(inventoryWindow)
-        QtCore.QMetaObject.connectSlotsByName(inventoryWindow)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, inventoryWindow):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        inventoryWindow.setWindowTitle(_translate("inventoryWindow", "MainWindow"))
-        self.label.setText(_translate("inventoryWindow", "<html><head/><body><p><img src=\":/inv_src/mainwindow.jpg\"/></p></body></html>"))
-        self.beef_pushbutton.setText(_translate("inventoryWindow", "BEEF"))
-        self.chicken_pushbutton.setText(_translate("inventoryWindow", "CHICKEN"))
-        self.pork_pushbutton.setText(_translate("inventoryWindow", "PORK"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p><img src=\":/inv_src/mainwindow.jpg\"/></p></body></html>"))
+        self.beef_pushbutton.setText(_translate("MainWindow", "BEEF"))
+        self.chicken_pushbutton.setText(_translate("MainWindow", "CHICKEN"))
+        self.pork_pushbutton.setText(_translate("MainWindow", "PORK"))
         item = self.inventory_table.horizontalHeaderItem(0)
-        item.setText(_translate("inventoryWindow", "Name"))
+        item.setText(_translate("MainWindow", "Name"))
         item = self.inventory_table.horizontalHeaderItem(1)
-        item.setText(_translate("inventoryWindow", "Price"))
+        item.setText(_translate("MainWindow", "Price"))
         item = self.inventory_table.horizontalHeaderItem(2)
-        item.setText(_translate("inventoryWindow", "Stock"))
-        self.add_pushbutton.setText(_translate("inventoryWindow", "ADD"))
-        self.update_pushbutton.setText(_translate("inventoryWindow", "UPDATE"))
-        self.delete_pushbutton.setText(_translate("inventoryWindow", "DELETE"))
-        self.back_pushButton.setText(_translate("inventoryWindow", "Back"))
+        item.setText(_translate("MainWindow", "Stock"))
+        self.add_pushbutton.setText(_translate("MainWindow", "ADD"))
+        self.update_pushbutton.setText(_translate("MainWindow", "UPDATE"))
+        self.delete_pushbutton.setText(_translate("MainWindow", "DELETE"))
+        self.back_pushButton.setText(_translate("MainWindow", "Back"))
 
 import inventory_source
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    inventoryWindow = QtWidgets.QMainWindow()
-    ui = Ui_inventoryWindow()
-    ui.setupUi(inventoryWindow)
-    inventoryWindow.show()
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
     sys.exit(app.exec_())
 

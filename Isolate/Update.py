@@ -1,15 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 
-class Ui_updateWindow(QMainWindow):
-    
-    def setupUi(self, updateWindow):
-        updateWindow.setObjectName("updateWindow")
-        updateWindow.resize(720, 500)
-        updateWindow.setMinimumSize(QtCore.QSize(720, 500))
-        updateWindow.setMaximumSize(QtCore.QSize(720, 500))
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(720, 500)
+        MainWindow.setMinimumSize(QtCore.QSize(720, 500))
+        MainWindow.setMaximumSize(QtCore.QSize(720, 500))
 
-        self.centralwidget = QtWidgets.QWidget(updateWindow)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -83,6 +81,7 @@ class Ui_updateWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.submit_pushButton.setObjectName("submit_pushButton")
+
         self.cancel_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.cancel_pushbutton.setGeometry(QtCore.QRect(320, 450, 101, 31))
 
@@ -97,6 +96,7 @@ class Ui_updateWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.cancel_pushbutton.setObjectName("cancel_pushbutton")
+
         self.itemName_label = QtWidgets.QLabel(self.centralwidget)
         self.itemName_label.setGeometry(QtCore.QRect(500, 170, 121, 31))
 
@@ -126,31 +126,31 @@ class Ui_updateWindow(QMainWindow):
 
         self.stocks_label.setFont(font)
         self.stocks_label.setObjectName("stocks_label")
-        updateWindow.setCentralWidget(self.centralwidget)
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(updateWindow)
-        QtCore.QMetaObject.connectSlotsByName(updateWindow)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, updateWindow):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        updateWindow.setWindowTitle(_translate("updateWindow", "MainWindow"))
-        self.label.setText(_translate("updateWindow", "<html><head/><body><p><img src=\":/inv_src/mainwindow.jpg\"/></p></body></html>"))
-        self.update_label.setText(_translate("updateWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:36pt; color:#ff2020;\">UPDATE</span></p></body></html>"))
-        self.itemName_edit.setPlaceholderText(_translate("updateWindow", "Name"))
-        self.submit_pushButton.setText(_translate("updateWindow", "Submit"))
-        self.cancel_pushbutton.setText(_translate("updateWindow", "Cancel"))
-        self.itemName_label.setText(_translate("updateWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">ITEM NAME</span></p></body></html>"))
-        self.price_label.setText(_translate("updateWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">PRICE</span></p></body></html>"))
-        self.stocks_label.setText(_translate("updateWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">STOCKS</span></p></body></html>"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p><img src=\":/inv_src/mainwindow.jpg\"/></p></body></html>"))
+        self.update_label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:36pt; color:#ff2020;\">UPDATE</span></p></body></html>"))
+        self.itemName_edit.setPlaceholderText(_translate("MainWindow", "Name"))
+        self.submit_pushButton.setText(_translate("MainWindow", "Submit"))
+        self.cancel_pushbutton.setText(_translate("MainWindow", "Cancel"))
+        self.itemName_label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">ITEM NAME</span></p></body></html>"))
+        self.price_label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">PRICE</span></p></body></html>"))
+        self.stocks_label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">STOCKS</span></p></body></html>"))
 
 import inventory_source
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    updateWindow = QtWidgets.QMainWindow()
-    ui = Ui_updateWindow()
-    ui.setupUi(updateWindow)
-    updateWindow.show()
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
     sys.exit(app.exec_())
 
