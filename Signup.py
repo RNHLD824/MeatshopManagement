@@ -2,15 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 import pymysql
 
-class Ui_signupWindow(QMainWindow):
+class Ui_signupWindow:
 
     def __init__(self, Login):
         self.login = Login
         
     def goBack(self):
         self.signupWindow.hide()
-        self.login.show()
-        return None
+        self.login.this_window.show()
 
     def checkAccount(self, username):
         conn = pymysql.connect("localhost", "root", "", "meatshopdb")
@@ -55,6 +54,8 @@ class Ui_signupWindow(QMainWindow):
         return None
 
     def setupUi(self, signupWindow):
+
+        self.signupWindow = signupWindow
         
         signupWindow.setObjectName("signupWindow")
         signupWindow.resize(720, 500)
