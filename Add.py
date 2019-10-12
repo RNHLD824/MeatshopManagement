@@ -1,8 +1,27 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
+import pymysql
 
 class Ui_addWindow(QMainWindow):
-    
+
+    def __init__(self, inventory, selected):
+        self.selected = selected
+        self.inventory = inventory
+
+    def submit (self):
+        itemName_edit = self.itemName_edit.text()
+        price_spinbox = self.price_doublespinbox.value()
+        stock_spinbox = self.stock_spinbox.value()
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "INSERT INTO {0} VALUES ('{1}', {2}, {3})".format(self.selected, itemName_edit, price_spinbox, stock_sprinbox)
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+        return None
+
+            
     def setupUi(self, addWindow):
         addWindow.setObjectName("addWindow")
         addWindow.resize(720, 500)
@@ -68,8 +87,9 @@ class Ui_addWindow(QMainWindow):
         self.add_label.setFont(font)
         self.add_label.setObjectName("add_label")
 
-        self.submit_pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.submit_pushButton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.submit)
         self.submit_pushButton.setGeometry(QtCore.QRect(320, 400, 101, 31))
+        self.submit_pushButton.clicked.connect(self.submit)
 
         font = QtGui.QFont()
         font.setFamily("Fixedsys")

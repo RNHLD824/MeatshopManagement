@@ -5,6 +5,14 @@ from Inventory import Ui_inventoryWindow
 
 class Ui_transactionWindow(QMainWindow):
 
+    def __init__(self, Login):
+        self.login = Login
+
+    def logOut(self):
+        self.Dialog.hide()
+        self.login.show()
+        return None
+
     def toInventory(self):
         self.inventory = QtWidgets.QMainWindow()
         self.ui = Ui_inventoryWindow()

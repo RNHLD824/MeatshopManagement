@@ -23,16 +23,11 @@ class Ui_Dialog:
                 if username == account:
                     if password == accounts[account]:
                         QMessageBox.about(self.Dialog, "Login", "Successfully logged in!")
-                        self.mainwindow = QtWidgets.QMainWindow()
-                        self.uimain = Ui_transactionWindow()
-                        self.uimain.setupUi(self.mainwindow)
-                        self.mainwindow.show()
+                        self.transact()  
                     else:
                         QMessageBox.about(self.Dialog, "Login", "Invalid password!")
         else:
             QMessageBox.about(self.Dialog, "Login", "Account does not exist in the database!")
-
-        self.this_window.hide()        
             
     def signUp(self):
         self.ui = QtWidgets.QMainWindow()
@@ -40,6 +35,13 @@ class Ui_Dialog:
         self.signup.setupUi(self.ui)
         self.ui.show()
         self.Dialog.hide()
+
+    def transact(self):
+        self.ui2 = QtWidgets.QMainWindow()
+        self.transaction = Ui_transactionWindow(self.this_window)
+        self.transaction.setup.ui(self.ui2)
+        self.ui2.show()
+        self.Dialog()
 
     def pressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:

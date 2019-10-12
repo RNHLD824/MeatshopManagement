@@ -5,19 +5,34 @@ from Update import Ui_updateWindow
 
 class Ui_inventoryWindow(QMainWindow):
 
+    def __init__(self):
+        self.selected = ""
+
     def toAdd(self):
         self.add = QtWidgets.QMainWindow()
-        self.ui = Ui_addWindow()
+        self.ui = Ui_addWindow(self, self.selected)
         self.ui.setupUi(self.add) 
         self.add.show()
         self.this_window.hide()
 
     def toUpdate(self):
         self.update = QtWidgets.QMainWindow()
-        self.ui = Ui_updateWindow()
+        self.ui = Ui_updateWindow(self, self.selected)
         self.ui.setupUi(self.update) 
         self.update.show()
         self.this_window.hide()
+
+    def beefselected(self):
+        self.selected = "beef"
+        print(self.selected)
+
+    def chickenselected(self):
+        self.selected = "chicken"
+        print(self.selected)
+
+    def porkselected(self):
+        self.selected = "pork"
+        print(self.selected)
     
     def setupUi(self, inventoryWindow):
 
@@ -51,7 +66,7 @@ class Ui_inventoryWindow(QMainWindow):
         self.label.setMaximumSize(QtCore.QSize(720, 500))
         self.label.setObjectName("label")
 
-        self.beef_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.beef_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.beefselected())
         self.beef_pushbutton.setGeometry(QtCore.QRect(49, 190, 101, 41))
 
         font = QtGui.QFont()
@@ -66,7 +81,7 @@ class Ui_inventoryWindow(QMainWindow):
 "}")
         self.beef_pushbutton.setObjectName("beef_pushbutton")
 
-        self.chicken_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.chicken_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.chickenselected())
         self.chicken_pushbutton.setGeometry(QtCore.QRect(49, 270, 101, 41))
 
         font = QtGui.QFont()
@@ -82,6 +97,7 @@ class Ui_inventoryWindow(QMainWindow):
         self.chicken_pushbutton.setObjectName("chicken_pushbutton")
 
         self.pork_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.pork_pushbutton.clicked.connect(lambda func: self.porkselected())
         self.pork_pushbutton.setGeometry(QtCore.QRect(49, 350, 101, 41))
 
         font = QtGui.QFont()
@@ -144,7 +160,7 @@ class Ui_inventoryWindow(QMainWindow):
         item.setFont(font)
         self.inventory_table.setHorizontalHeaderItem(2, item)
 
-        self.add_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.add_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked = lambda func: self.toAdd())
         self.add_pushbutton.setGeometry(QtCore.QRect(570, 190, 101, 41))
 
         font = QtGui.QFont()
