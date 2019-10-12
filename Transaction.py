@@ -3,15 +3,16 @@ from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 import pymysql
 from Inventory import Ui_inventoryWindow
 
-class Ui_transactionWindow(QMainWindow):
+class Ui_transactionWindow:
 
-    def __init__(self, Login):
-        self.login = Login
+    def __init__(self, login):
+        self.login = login
 
-    def logOut(self):
-        self.Dialog.hide()
-        self.login.show()
-        return None
+    def logout_function(self):
+        self.login.usernameInput.setText("")
+        self.login.passwordInput.setText("")
+        self.login.this_window.show()
+        self.this_window.hide()
 
     def toInventory(self):
         self.inventory = QtWidgets.QMainWindow()
@@ -218,6 +219,7 @@ class Ui_transactionWindow(QMainWindow):
         self.submit_pushbutton.setObjectName("submit_pushbutton")
 
         self.logout_pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.logout_pushButton.clicked.connect(self.logout_function)
         self.logout_pushButton.setGeometry(QtCore.QRect(10, 10, 101, 31))
 
         font = QtGui.QFont()
