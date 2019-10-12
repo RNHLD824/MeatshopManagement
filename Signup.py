@@ -1,8 +1,61 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
+import pymysql
 
-class Ui_signupWindow(object):
+class Ui_signupWindow(QMainWindow):
+
+    def __init__(self, Login):
+        self.login = Login
+        
+    def goBack(self):
+        self.signupWindow.hide()
+        self.login.show()
+        return None
+
+    def checkAccount(self, username):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT Username, Password FROM admin"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            accounts = {}
+            for account in result:
+                accounts[account[0]] = account[1]
+            if username in accounts:
+                return 1
+            else:
+                return 0
+        return 0
+        
+    def submitAccount(self):
+        username = self.username_input.text()
+        password = self.password_input.text()
+        contact = self.contact_input.text()
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        try:
+            with conn:
+                cursor = conn.cursor()
+                if username != "" and password != "" and contact != "":
+                    if self.checkAccount(username):
+                        QMessageBox.about(self.signupWindow, "Sign Up", "Username already exists!")
+                        return None
+                    else:
+                        QMessageBox.about(self.signupWindow, "Sign Up", "Account created successfully!")
+                        query = "INSERT INTO admin VALUES ('{0}', '{1}', '{2}')".format(username, password, contact)
+                        self.goBack()
+                    cursor.execute(query)
+                    conn.commit()
+                    cursor.close()
+                else:
+                    QMessageBox.about(self.signupWindow, "Sign Up", "Please fill all the blank!")
+        except:
+            print("Error!")
+            return None
+        return None
 
     def setupUi(self, signupWindow):
+        
         signupWindow.setObjectName("signupWindow")
         signupWindow.resize(720, 500)
 
@@ -66,6 +119,7 @@ class Ui_signupWindow(object):
         self.username_input.setObjectName("username_input")
 
         self.password_input = QtWidgets.QLineEdit(self.centralwidget)
+        self.password_input.setEchoMode(QtWidgets.QLineEdit.Password)    
         self.password_input.setGeometry(QtCore.QRect(290, 250, 361, 41))
         self.password_input.setStyleSheet("")
         self.password_input.setAlignment(QtCore.Qt.AlignCenter)
@@ -92,6 +146,7 @@ class Ui_signupWindow(object):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.submit_pushButton.setObjectName("submit_pushButton")
+        self.submit_pushButton.clicked.connect(self.submitAccount)
 
         self.back_pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.back_pushButton.setGeometry(QtCore.QRect(310, 440, 101, 31))
@@ -106,6 +161,7 @@ class Ui_signupWindow(object):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.back_pushButton.setObjectName("back_pushButton")
+        self.back_pushButton.clicked.connect(self.goBack)
 
         signupWindow.setCentralWidget(self.centralwidget)
 

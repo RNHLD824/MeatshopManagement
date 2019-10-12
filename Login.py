@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 import pymysql, Signup
 from Transaction import Ui_transactionWindow
 
-class Ui_MainWindow:
+class Ui_MainWindow(QMainWindow):
 
     def login(self):
         username = self.usernameInput.text()
@@ -122,6 +122,7 @@ class Ui_MainWindow:
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.loginButton.setObjectName("loginButton")
+
         self.signUpButton = QtWidgets.QPushButton(MainWindow, clicked=self.signUp)
         self.signUpButton.setGeometry(QtCore.QRect(520, 420, 101, 31))
 
