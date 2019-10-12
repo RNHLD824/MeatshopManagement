@@ -1,95 +1,49 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
-import pymysql, Signup
-from Transaction import Ui_transactionWindow
 
-class Ui_Dialog:
+class Ui_loginWindow(object):
+    def setupUi(self, loginWindow):
 
-    def login(self):
-        username = self.usernameInput.text()
-        password = self.passwordInput.text()
-        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
-        cursor = conn.cursor()
-        query = "SELECT Username, Password FROM admin"
-        cursor.execute(query)
-        result = cursor.fetchall()
-        accounts = {}
-
-        for account in result:
-            accounts[account[0]] = account[1]
-
-        if username in accounts:
-            for account in accounts:
-                if username == account:
-                    if password == accounts[account]:
-                        QMessageBox.about(self.Dialog, "Login", "Successfully logged in!")
-                        self.transact()  
-                    else:
-                        QMessageBox.about(self.Dialog, "Login", "Invalid password!")
-        else:
-            QMessageBox.about(self.Dialog, "Login", "Account does not exist in the database!")
-            
-    def signUp(self):
-        self.ui = QtWidgets.QMainWindow()
-        self.signup = Signup.Ui_Dialog(self.Dialog)
-        self.signup.setupUi(self.ui)
-        self.ui.show()
-        self.Dialog.hide()
-
-    def transact(self):
-        self.ui2 = QtWidgets.QMainWindow()
-        self.transaction = Ui_transactionWindow(self.this_window)
-        self.transaction.setup.ui(self.ui2)
-        self.ui2.show()
-        self.Dialog()
-
-    def pressEvent(self, event):
-        if event.key() == QtCore.Qt.Key_Escape:
-            self.Dialog.close() 
-    
-    def setupUi(self, Dialog):
-        self.Dialog = Dialog
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(720, 500)
-
-        self.this_window = Dialog
+        loginWindow.setObjectName("loginWindow")
+        loginWindow.resize(720, 500)
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(Dialog.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(loginWindow.sizePolicy().hasHeightForWidth())
 
-        Dialog.setSizePolicy(sizePolicy)
-        Dialog.setMinimumSize(QtCore.QSize(720, 500))
-        Dialog.setMaximumSize(QtCore.QSize(720, 500))
+        loginWindow.setSizePolicy(sizePolicy)
+        loginWindow.setMinimumSize(QtCore.QSize(720, 500))
+        loginWindow.setMaximumSize(QtCore.QSize(720, 500))
 
-        self.background = QtWidgets.QLabel(Dialog)
-        self.background.setGeometry(QtCore.QRect(0, 0, 720, 500))
+        self.centralwidget = QtWidgets.QWidget(loginWindow)
+        self.centralwidget.setObjectName("centralwidget")
+
+        self.login_bg = QtWidgets.QLabel(self.centralwidget)
+        self.login_bg.setGeometry(QtCore.QRect(0, 0, 720, 500))
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.background.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.login_bg.sizePolicy().hasHeightForWidth())
 
-        self.background.setSizePolicy(sizePolicy)
-        self.background.setMinimumSize(QtCore.QSize(720, 500))
-        self.background.setMaximumSize(QtCore.QSize(720, 500))
-        self.background.setObjectName("background")
+        self.login_bg.setSizePolicy(sizePolicy)
+        self.login_bg.setMinimumSize(QtCore.QSize(720, 500))
+        self.login_bg.setMaximumSize(QtCore.QSize(720, 500))
+        self.login_bg.setObjectName("login_bg")
 
-        self.usernameInput = QtWidgets.QLineEdit(Dialog)
+        self.usernameInput = QtWidgets.QLineEdit(self.centralwidget)
         self.usernameInput.setGeometry(QtCore.QRect(50, 230, 361, 41))
         self.usernameInput.setStyleSheet("")
         self.usernameInput.setAlignment(QtCore.Qt.AlignCenter)
         self.usernameInput.setObjectName("usernameInput")
 
-        self.passwordInput = QtWidgets.QLineEdit(Dialog)
-        self.passwordInput.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.passwordInput.setGeometry(QtCore.QRect(50, 310, 361, 41))
+        self.passwordInput = QtWidgets.QLineEdit(self.centralwidget)
+        self.passwordInput.setGeometry(QtCore.QRect(50, 320, 361, 41))
         self.passwordInput.setAlignment(QtCore.Qt.AlignCenter)
         self.passwordInput.setObjectName("passwordInput")
 
-        self.usernameLabel = QtWidgets.QLabel(Dialog)
-        self.usernameLabel.setGeometry(QtCore.QRect(520, 240, 121, 31))
+        self.usernameLabel = QtWidgets.QLabel(self.centralwidget)
+        self.usernameLabel.setGeometry(QtCore.QRect(510, 240, 121, 31))
 
         font = QtGui.QFont()
         font.setFamily("Big Space")
@@ -97,8 +51,8 @@ class Ui_Dialog:
 
         self.usernameLabel.setFont(font)
         self.usernameLabel.setObjectName("usernameLabel")
-        self.passwordLabel = QtWidgets.QLabel(Dialog)
-        self.passwordLabel.setGeometry(QtCore.QRect(520, 320, 121, 31))
+        self.passwordLabel = QtWidgets.QLabel(self.centralwidget)
+        self.passwordLabel.setGeometry(QtCore.QRect(510, 330, 121, 31))
 
         font = QtGui.QFont()
         font.setFamily("Big Space")
@@ -106,8 +60,9 @@ class Ui_Dialog:
 
         self.passwordLabel.setFont(font)
         self.passwordLabel.setObjectName("passwordLabel")
-        self.loginButton = QtWidgets.QPushButton(Dialog, clicked=self.login)
-        self.loginButton.setGeometry(QtCore.QRect(520, 380, 101, 31))
+
+        self.loginButton = QtWidgets.QPushButton(self.centralwidget)
+        self.loginButton.setGeometry(QtCore.QRect(480, 380, 101, 31))
 
         font = QtGui.QFont()
         font.setFamily("Fixedsys")
@@ -120,8 +75,9 @@ class Ui_Dialog:
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.loginButton.setObjectName("loginButton")
-        self.signUpButton = QtWidgets.QPushButton(Dialog, clicked=self.signUp)
-        self.signUpButton.setGeometry(QtCore.QRect(520, 420, 101, 31))
+
+        self.signUpButton = QtWidgets.QPushButton(self.centralwidget)
+        self.signUpButton.setGeometry(QtCore.QRect(480, 420, 101, 31))
 
         font = QtGui.QFont()
         font.setFamily("Fixedsys")
@@ -135,27 +91,30 @@ class Ui_Dialog:
 "}")
         self.signUpButton.setObjectName("signUpButton")
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        loginWindow.setCentralWidget(self.centralwidget)
 
-    def retranslateUi(self, Dialog):
+        self.retranslateUi(loginWindow)
+        QtCore.QMetaObject.connectSlotsByName(loginWindow)
+
+    def retranslateUi(self, loginWindow):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.background.setText(_translate("Dialog", "<html><head/><body><p><img src=\":/login prefix/login.jpg\"/></p></body></html>"))
-        self.usernameInput.setPlaceholderText(_translate("Dialog", "Insert Username"))
-        self.passwordInput.setPlaceholderText(_translate("Dialog", "Inser Password"))
-        self.usernameLabel.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">USERNAME</span></p></body></html>"))
-        self.passwordLabel.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">PASSWORD</span></p></body></html>"))
-        self.loginButton.setText(_translate("Dialog", "Log In"))
-        self.signUpButton.setText(_translate("Dialog", "Sign Up"))
-import login_source_rc
+        loginWindow.setWindowTitle(_translate("loginWindow", "MainWindow"))
+        self.login_bg.setText(_translate("loginWindow", "<html><head/><body><p><img src=\":/login prefix/login.jpg\"/></p></body></html>"))
+        self.usernameInput.setPlaceholderText(_translate("loginWindow", "Insert Username"))
+        self.passwordInput.setPlaceholderText(_translate("loginWindow", "Inser Password"))
+        self.usernameLabel.setText(_translate("loginWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">USERNAME</span></p></body></html>"))
+        self.passwordLabel.setText(_translate("loginWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">PASSWORD</span></p></body></html>"))
+        self.loginButton.setText(_translate("loginWindow", "Log In"))
+        self.signUpButton.setText(_translate("loginWindow", "Sign Up"))
 
+import login_source_rc
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
+    loginWindow = QtWidgets.QMainWindow()
+    ui = Ui_loginWindow()
+    ui.setupUi(loginWindow)
+    loginWindow.show()
     sys.exit(app.exec_())
+
