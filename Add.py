@@ -2,11 +2,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 import pymysql
 
-class Ui_addWindow(QMainWindow):
+class Ui_addWindow:
 
-    def __init__(self, inventory, selected):
-        self.selected = selected
-        self.inventory = inventory
+    def __init__(self, Inventory):
+        self.inventory = Inventory
+        
+    def goBack(self):
+        print(True)
+        self.addWindow.hide()
+        self.inventory.this_window.show()
 
     def submit (self):
         itemName_edit = self.itemName_edit.text()
@@ -117,6 +121,7 @@ class Ui_addWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.cancel_pushbutton.setObjectName("cancel_pushbutton")
+        self.cancel_pushbutton.clicked.connect(self.goBack)
 
         self.price_label = QtWidgets.QLabel(self.centralwidget)
         self.price_label.setGeometry(QtCore.QRect(470, 240, 121, 31))

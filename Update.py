@@ -1,7 +1,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 
-class Ui_updateWindow(QMainWindow):
+class Ui_updateWindow:
+
+    def __init__(self, Inventory):
+        self.inventory = Inventory
+        
+    def goBack(self):
+        print(True)
+        self.updateWindow.hide()
+        self.inventory.this_window.show()
     
     def setupUi(self, updateWindow):
         updateWindow.setObjectName("updateWindow")
@@ -97,6 +105,8 @@ class Ui_updateWindow(QMainWindow):
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.cancel_pushbutton.setObjectName("cancel_pushbutton")
+        self.cancel_pushbutton.clicked.connect(self.goBack)
+        
         self.itemName_label = QtWidgets.QLabel(self.centralwidget)
         self.itemName_label.setGeometry(QtCore.QRect(500, 170, 121, 31))
 

@@ -31,7 +31,7 @@ class Ui_MainWindow(QMainWindow):
             
     def signUp(self):
         self.ui = QtWidgets.QMainWindow()
-        self.signup = Signup.Ui_signupWindow(self.MainWindow)
+        self.signup = Signup.Ui_signupWindow(self)
         self.signup.setupUi(self.ui)
         self.ui.show()
         self.MainWindow.hide()

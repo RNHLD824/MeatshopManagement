@@ -3,22 +3,19 @@ from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 from Add import Ui_addWindow
 from Update import Ui_updateWindow
 
-class Ui_inventoryWindow(QMainWindow):
-
-    def __init__(self):
-        self.selected = ""
+class Ui_inventoryWindow:
 
     def toAdd(self):
         self.add = QtWidgets.QMainWindow()
-        self.ui = Ui_addWindow(self, self.selected)
+        self.ui = Ui_addWindow(self)
         self.ui.setupUi(self.add) 
         self.add.show()
         self.this_window.hide()
 
     def toUpdate(self):
         self.update = QtWidgets.QMainWindow()
-        self.ui = Ui_updateWindow(self, self.selected)
-        self.ui.setupUi(self.update) 
+        self.ui2 = Ui_updateWindow(self)
+        self.ui2.setupUi(self.update) 
         self.update.show()
         self.this_window.hide()
 
