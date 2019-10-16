@@ -2,34 +2,94 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
 from Add import Ui_addWindow
 from Update import Ui_updateWindow
+import pymysql
 
 class Ui_inventoryWindow:
+
+    def __init__(self, transaction):
+        self.transaction = transaction
+
+    def goBack(self):
+        self.transaction.this_window.show()
+        self.this_window.hide()
 
     def toAdd(self):
         self.add = QtWidgets.QMainWindow()
         self.ui = Ui_addWindow(self)
-        self.ui.setupUi(self.add) 
+        self.ui.setupUi(self.add)
         self.add.show()
         self.this_window.hide()
+
+    def cell_was_clicked(self, row, column):
+        self.row = row
+
+    def beefDeleteClicked(self):
+        try:
+            Name = self.inventory_table.item(self.row, 0).text()
+            Price = float(self.inventory_table.item(self.row, 1).text())
+            Stock = int(self.inventory_table.item(self.row, 2).text())
+            conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+            with conn:
+                cursor = conn.cursor()
+                if self.selected == "beef":
+                    query = "DELETE FROM beef WHERE Beef_Name='{0}' AND Prices={1} AND Stocks={2}".format(Name, Price, Stock)
+                elif self.selected == "chicken":
+                    query = "DELETE FROM chicken WHERE Chicken_Name='{0}' AND Prices={1} AND Stocks={2}".format(Name, Price, Stock)
+                elif self.selected == "pork":
+                    query = "DELETE FROM pork WHERE Pork_Name='{0}' AND Prices={1} AND Stocks={2}".format(Name, Price, Stock)
+                answer = QMessageBox.question(self.this_window, "Delete", "Are you sure you want to delete '{0}'?".format(Name))
+                if answer == 16384:
+                    cursor.execute(query)
+                else:
+                    return
+                conn.commit()
+                cursor.close()
+                self.refresh()
+        except:
+            return
 
     def toUpdate(self):
         self.update = QtWidgets.QMainWindow()
         self.ui2 = Ui_updateWindow(self)
-        self.ui2.setupUi(self.update) 
+        self.ui2.setupUi(self.update)
+        try:
+            self.ui2.insertValues()
+        except:
+            return
         self.update.show()
         self.this_window.hide()
 
     def beefselected(self):
         self.selected = "beef"
-        print(self.selected)
+        self.refresh()
 
     def chickenselected(self):
         self.selected = "chicken"
-        print(self.selected)
+        self.refresh()
 
     def porkselected(self):
         self.selected = "pork"
-        print(self.selected)
+        self.refresh()
+
+    def addTable(self, columns):
+        rowPosition = self.inventory_table.rowCount()
+        self.inventory_table.insertRow(rowPosition)
+        for i, column in enumerate(columns):
+            self.inventory_table.setItem(rowPosition, i, QtWidgets.QTableWidgetItem(str(column)))
+
+    def refresh(self):
+        self.inventory_table.setRowCount(0)
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT * FROM {0}".format(self.selected)
+            cursor.execute(query)
+            conn.commit()
+            result = cursor.fetchall()
+            for row in result:
+                self.addTable(row)
+            cursor.close()
+        return
     
     def setupUi(self, inventoryWindow):
 
@@ -110,23 +170,23 @@ class Ui_inventoryWindow:
         self.pork_pushbutton.setObjectName("pork_pushbutton")
 
         self.inventory_table = QtWidgets.QTableWidget(self.centralwidget)
+        self.inventory_table.cellClicked.connect(self.cell_was_clicked)
         self.inventory_table.setGeometry(QtCore.QRect(220, 120, 301, 351))
 
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
 
         self.inventory_table.setFont(font)
-        self.inventory_table.setStyleSheet("QTableWidget  {background-color: rgb(255, 38, 38);\n"
+        self.inventory_table.setStyleSheet("QWidget {background-color: transparent;}"
+"                        QTableWidget  {background-color: rgb(255, 38, 38);\n"
 "                        border: none;\n"
-"                        color:rgb(255,255,255);\n"
-"                        gridline-color:rgb(255,255,255);\n"
+"                        color: black;\n"
+"                        gridline-color: black;\n"
 "}\n"
 "QHeaderView:section {border:none\n"
 "                                    color:rgb(255,255,255);\n"
 "}\n"
-"QWidget {border:none\n"
-"                color:rgb(255, 255, 255);\n"
-"}")
+"QWidget {border:none\n}")
         self.inventory_table.setObjectName("inventory_table")
         self.inventory_table.setColumnCount(3)
         self.inventory_table.setRowCount(0)
@@ -171,7 +231,6 @@ class Ui_inventoryWindow:
 "QPushButton:hover {background-color: rgb(218, 167, 0);\n"
 "}")
         self.add_pushbutton.setObjectName("add_pushbutton")
-        self.add_pushbutton.clicked.connect(self.toAdd)
 
         self.update_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.update_pushbutton.setGeometry(QtCore.QRect(570, 270, 101, 41))
@@ -189,7 +248,7 @@ class Ui_inventoryWindow:
         self.update_pushbutton.setObjectName("update_pushbutton")
         self.update_pushbutton.clicked.connect(self.toUpdate)
 
-        self.delete_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.delete_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked = lambda func: self.beefDeleteClicked())
         self.delete_pushbutton.setGeometry(QtCore.QRect(570, 350, 101, 41))
 
         font = QtGui.QFont()
@@ -204,7 +263,7 @@ class Ui_inventoryWindow:
 "}")
         self.delete_pushbutton.setObjectName("delete_pushbutton")
 
-        self.back_pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.back_pushButton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.goBack())
         self.back_pushButton.setGeometry(QtCore.QRect(20, 20, 101, 31))
 
         font = QtGui.QFont()
@@ -221,6 +280,8 @@ class Ui_inventoryWindow:
 
         self.retranslateUi(inventoryWindow)
         QtCore.QMetaObject.connectSlotsByName(inventoryWindow)
+
+        self.beefselected()
 
     def retranslateUi(self, inventoryWindow):
         _translate = QtCore.QCoreApplication.translate

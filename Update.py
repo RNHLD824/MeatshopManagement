@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QMainWindow, QPushButton
+import pymysql
 
 class Ui_updateWindow:
 
@@ -7,11 +8,38 @@ class Ui_updateWindow:
         self.inventory = Inventory
         
     def goBack(self):
-        print(True)
-        self.updateWindow.hide()
+        self.upWin.hide()
         self.inventory.this_window.show()
+
+    def insertValues(self):
+        self.itemName_edit.setText(self.inventory.inventory_table.item(self.inventory.row, 0).text())
+        self.price_doublespinbox.setValue(float(self.inventory.inventory_table.item(self.inventory.row, 1).text()))
+        self.stock_spinbox.setValue(int(self.inventory.inventory_table.item(self.inventory.row, 2).text()))
     
+    def submit (self):
+        itemName_edit = self.itemName_edit.text()
+        price_spinbox = self.price_doublespinbox.value()
+        stock_spinbox = self.stock_spinbox.value()
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        if itemName_edit != "":
+            with conn:
+                cursor = conn.cursor()
+                if self.inventory.selected == "beef":
+                    query = "UPDATE beef SET Beef_Name = '{0}', Prices = {1}, Stocks = {2} WHERE Beef_Name = '{3}'".format(itemName_edit, price_spinbox, stock_spinbox, self.inventory.inventory_table.item(self.inventory.row, 0).text())
+                elif self.inventory.selected == "chicken":
+                    query = "UPDATE chicken SET Chicken_Name = '{0}', Prices = {1}, Stocks = {2} WHERE Chicken_Name = '{3}'".format(itemName_edit, price_spinbox, stock_spinbox, self.inventory.inventory_table.item(self.inventory.row, 0).text())
+                elif self.inventory.selected == "pork":
+                    query = "UPDATE pork SET Pork_Name = '{0}', Prices = {1}, Stocks = {2} WHERE Pork_Name = '{3}'".format(itemName_edit, price_spinbox, stock_spinbox, self.inventory.inventory_table.item(self.inventory.row, 0).text())
+                cursor.execute(query)
+                conn.commit()
+                cursor.close()
+                QMessageBox.about(self.upWin, "Update product", "'{0}' has been updated".format(itemName_edit))
+                self.inventory.refresh()
+                self.goBack()
+        return
+
     def setupUi(self, updateWindow):
+        self.upWin = updateWindow
         updateWindow.setObjectName("updateWindow")
         updateWindow.resize(720, 500)
         updateWindow.setMinimumSize(QtCore.QSize(720, 500))
@@ -55,6 +83,7 @@ class Ui_updateWindow:
         self.itemName_edit.setObjectName("itemName_edit")
 
         self.price_doublespinbox = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.price_doublespinbox.setMaximum(9999)
         self.price_doublespinbox.setGeometry(QtCore.QRect(270, 240, 201, 61))
 
         font = QtGui.QFont()
@@ -66,6 +95,7 @@ class Ui_updateWindow:
         self.price_doublespinbox.setObjectName("price_doublespinbox")
 
         self.stock_spinbox = QtWidgets.QSpinBox(self.centralwidget)
+        self.stock_spinbox.setMaximum(9999)
         self.stock_spinbox.setGeometry(QtCore.QRect(270, 330, 201, 61))
 
         font = QtGui.QFont()
@@ -76,7 +106,7 @@ class Ui_updateWindow:
         self.stock_spinbox.setAlignment(QtCore.Qt.AlignCenter)
         self.stock_spinbox.setObjectName("stock_spinbox")
 
-        self.submit_pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.submit_pushButton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.submit())
         self.submit_pushButton.setGeometry(QtCore.QRect(320, 410, 101, 31))
 
         font = QtGui.QFont()

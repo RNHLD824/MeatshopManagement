@@ -6,9 +6,12 @@ class Ui_addWindow:
 
     def __init__(self, Inventory):
         self.inventory = Inventory
+
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Escape:
+            self.goBack()
         
     def goBack(self):
-        print(True)
         self.addWindow.hide()
         self.inventory.this_window.show()
 
@@ -17,16 +20,21 @@ class Ui_addWindow:
         price_spinbox = self.price_doublespinbox.value()
         stock_spinbox = self.stock_spinbox.value()
         conn = pymysql.connect("localhost", "root", "", "meatshopdb")
-        with conn:
-            cursor = conn.cursor()
-            query = "INSERT INTO {0} VALUES ('{1}', {2}, {3})".format(self.selected, itemName_edit, price_spinbox, stock_sprinbox)
-            cursor.execute(query)
-            conn.commit()
-            cursor.close()
-        return None
-
+        if itemName_edit != "":
+            with conn:
+                cursor = conn.cursor()
+                query = "INSERT INTO {0} VALUES ('{1}', {2}, {3})".format(self.inventory.selected, itemName_edit, price_spinbox, stock_spinbox)
+                cursor.execute(query)
+                conn.commit()
+                cursor.close()
+                QMessageBox.about(self.addWindow, "Add product", "'{0}' has been inserted".format(itemName_edit))
+                self.inventory.refresh()
+                self.goBack()
+        return
             
     def setupUi(self, addWindow):
+        self.addWindow = addWindow
+        addWindow.keyPressEvent = self.keyPressEvent
         addWindow.setObjectName("addWindow")
         addWindow.resize(720, 500)
 
@@ -61,6 +69,7 @@ class Ui_addWindow:
 
         self.price_doublespinbox = QtWidgets.QDoubleSpinBox(self.centralwidget)
         self.price_doublespinbox.setGeometry(QtCore.QRect(270, 230, 201, 61))
+        self.price_doublespinbox.setMaximum(9999)
 
         font = QtGui.QFont()
         font.setFamily("Century Gothic")
@@ -71,6 +80,7 @@ class Ui_addWindow:
         self.price_doublespinbox.setObjectName("price_doublespinbox")
 
         self.stock_spinbox = QtWidgets.QSpinBox(self.centralwidget)
+        self.stock_spinbox.setMaximum(9999)
         self.stock_spinbox.setGeometry(QtCore.QRect(270, 320, 201, 61))
 
         font = QtGui.QFont()

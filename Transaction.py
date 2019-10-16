@@ -16,10 +16,64 @@ class Ui_transactionWindow:
 
     def toInventory(self):
         self.inventory = QtWidgets.QMainWindow()
-        self.ui = Ui_inventoryWindow()
+        self.ui = Ui_inventoryWindow(self)
         self.ui.setupUi(self.inventory)
         self.inventory.show()
         self.this_window.hide()
+
+    def beefselected(self):
+        self.selected = "beef"
+        self.refresh_itemTable()
+
+    def chickenselected(self):
+        self.selected = "chicken"
+        self.refresh_itemTable()
+
+    def porkselected(self):
+        self.selected = "pork"
+        self.refresh_itemTable()
+
+
+    def itemTable(self, columns):
+        rowPosition = self.products_table.rowCount()
+        self.products_table.insertRow(rowPosition)
+        for i, column in enumerate(columns):
+            self.products_table.setItem(rowPosition, i, QtWidgets.QTableWidgetItem(str(column)))
+
+    def purchaseTable(self, columns):
+        rowPosition = self.orders_table.rowCount()
+        self.orders_table.insertRow(rowPosition)
+        for i, column in enumerate(columns):
+            self.orders_table.setItem(rowPosition, i, QtWidgets.QTableWidgetItem(str(column)))
+
+
+    def refresh_itemTable(self):
+        self.products_table.setRowCount(0)
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT * FROM {0}".format(self.selected)
+            cursor.execute(query)
+            conn.commit()
+            result = cursor.fetchall()
+            for row in result:
+                self.itemTable(row)
+            cursor.close()
+        return
+
+    def refresh_purchaseTable(self):
+        self.orders_table.setRowCount(0)
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT * FROM {0}".format(self.selected)
+            cursor.execute(query)
+            conn.commit()
+            result = cursor.fetchall()
+            for row in result:
+                self.purchaseTable(row)
+            cursor.close()
+        return
         
     def setupUi(self, transactionWindow):
 
@@ -53,7 +107,7 @@ class Ui_transactionWindow:
         self.label.setMaximumSize(QtCore.QSize(850, 500))
         self.label.setObjectName("label")
 
-        self.beef_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.beef_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.beefselected())
         self.beef_pushbutton.setGeometry(QtCore.QRect(10, 180, 91, 41))
 
         font = QtGui.QFont()
@@ -68,7 +122,7 @@ class Ui_transactionWindow:
 "}")
         self.beef_pushbutton.setObjectName("beef_pushbutton")
 
-        self.chicken_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.chicken_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked=lambda func: self.chickenselected())
         self.chicken_pushbutton.setGeometry(QtCore.QRect(10, 250, 91, 41))
 
         font = QtGui.QFont()
@@ -84,6 +138,7 @@ class Ui_transactionWindow:
         self.chicken_pushbutton.setObjectName("chicken_pushbutton")
 
         self.pork_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.pork_pushbutton.clicked.connect(lambda func: self.porkselected())
         self.pork_pushbutton.setGeometry(QtCore.QRect(10, 320, 91, 41))
 
         font = QtGui.QFont()
@@ -139,6 +194,7 @@ class Ui_transactionWindow:
 
         item.setFont(font)
         self.products_table.setHorizontalHeaderItem(2, item)
+        
         self.orders_table = QtWidgets.QTableWidget(self.centralwidget)
         self.orders_table.setGeometry(QtCore.QRect(500, 120, 301, 341))
         self.orders_table.setStyleSheet("QTableWidget  {background-color: rgb(255, 38, 38);\n"
@@ -179,6 +235,7 @@ class Ui_transactionWindow:
 
         item.setFont(font)
         self.orders_table.setHorizontalHeaderItem(2, item)
+        
         self.add_pushbutton = QtWidgets.QPushButton(self.centralwidget)
         self.add_pushbutton.setGeometry(QtCore.QRect(400, 210, 91, 81))
 
