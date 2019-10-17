@@ -7,6 +7,58 @@ class Ui_transactionWindow:
 
     def __init__(self, login):
         self.login = login
+    
+
+    def cell_was_clicked_inventory(self, row, column):
+        self.inventory_cell_row = row
+
+    
+
+    def cell_was_clicked_cart(self, row, column):
+        self.cart_cell_row = row
+
+    def decrementProduct(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            if self.selected == "beef":
+                query = "UPDATE beef SET Stocks = IF(Stocks > 0, Stocks - 1, 0) WHERE Beef_Name = '{0}'".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            elif self.selected == "chicken":
+                query = "UPDATE chicken SET Stocks = IF(Stocks > 0, Stocks - 1, 1) WHERE Chicken_Name = '{0}'".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            elif self.selected == "pork":
+                query = "UPDATE pork SET Stocks = IF(Stocks > 0, Stocks - 1, 0) WHERE Pork_Name = '{0}'".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+        return
+
+    def getInventoryProduct(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            if self.selected == "beef":
+                query = "SELECT * FROM beef".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            elif self.selected == "chicken":
+                query = "SELECT * FROM chicken".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            elif self.selected == "pork":
+                query = "SELECT * FROM pork".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            cursor.execute(query)
+            conn.commit()
+        return
+
+    def addToCart(self):
+        self.decrementProduct()
+##        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+##        with conn:
+##            cursor = conn.cursor()
+##            if self.selected == "beef":
+##                query = "SELECT * FROM {0} WHERE Beef_Name = '{1}'".format(self.selected, self.products_table.item(0, 0).text())
+##            cursor.execute(query)
+##            result = cursor.fetchall()[0]
+##            cursor.close()
+##            conn.commit()
+##        return
+        self.refresh_itemTable()
 
     def logout_function(self):
         self.login.usernameInput.setText("")
@@ -32,7 +84,6 @@ class Ui_transactionWindow:
     def porkselected(self):
         self.selected = "pork"
         self.refresh_itemTable()
-
 
     def itemTable(self, columns):
         rowPosition = self.products_table.rowCount()
@@ -154,6 +205,7 @@ class Ui_transactionWindow:
         self.pork_pushbutton.setObjectName("pork_pushbutton")
 
         self.products_table = QtWidgets.QTableWidget(self.centralwidget)
+        self.products_table.cellClicked.connect(self.cell_was_clicked_inventory)
         self.products_table.setGeometry(QtCore.QRect(110, 120, 301, 341))
         self.products_table.setStyleSheet("QTableWidget  {background-color: rgb(255, 38, 38);\n"
 "                        border: none;\n"
@@ -236,7 +288,7 @@ class Ui_transactionWindow:
         item.setFont(font)
         self.orders_table.setHorizontalHeaderItem(2, item)
         
-        self.add_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.add_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked=self.addToCart)
         self.add_pushbutton.setGeometry(QtCore.QRect(400, 210, 91, 81))
 
         font = QtGui.QFont()
