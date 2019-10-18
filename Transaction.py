@@ -5,8 +5,8 @@ from Inventory import Ui_inventoryWindow
 
 class Ui_transactionWindow:
 
-    def __init__(self, login):
-        self.login = login
+    # def __init__(self, login):
+    #     self.login = login
 
     def cell_was_clicked_inventory(self, row, column):
         self.inventory_cell_row = row
@@ -206,9 +206,26 @@ class Ui_transactionWindow:
             cursor.close()
             QMessageBox.about(QtWidgets.QMainWindow(), "Purchase", "Purchased successfully!")
             self.refresh_purchaseTable()
+
+            self.no_of_transactions = self.addTransaction()
+            self.number_of_transactions.setText("Number of transactions: {0}".format(self.no_of_transactions))
+            
         return
+
+    def addTransaction(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT getTransaction({0});".format(self.no_of_transactions)
+            cursor.execute(query)
+            result = cursor.fetchone()[0]
+            conn.commit()
+            cursor.close()
+        return result
         
     def setupUi(self, transactionWindow):
+
+        self.no_of_transactions = 0
 
         self.this_window = transactionWindow
 
@@ -441,7 +458,17 @@ class Ui_transactionWindow:
         self.inventory_pushButton.setObjectName("inventory_pushButton")
         self.inventory_pushButton.clicked.connect(self.toInventory)
         
+        
         transactionWindow.setCentralWidget(self.centralwidget)
+
+        font = QtGui.QFont()
+        font.setFamily("Big Space")
+        font.setPointSize(12)
+
+        self.number_of_transactions = QtWidgets.QLabel(self.centralwidget)
+        self.number_of_transactions.setGeometry(QtCore.QRect(150, 75, 200, 50))
+        self.number_of_transactions.setFont(font)
+        self.number_of_transactions.setStyleSheet("color: white;")
 
         self.retranslateUi(transactionWindow)
         QtCore.QMetaObject.connectSlotsByName(transactionWindow)
@@ -454,6 +481,7 @@ class Ui_transactionWindow:
         _translate = QtCore.QCoreApplication.translate
         transactionWindow.setWindowTitle(_translate("transactionWindow", "MainWindow"))
         self.label.setText(_translate("transactionWindow", "<html><head/><body><p><img src=\":/trans_src/mainwindow2.jpg\"/></p></body></html>"))
+        self.number_of_transactions.setText(_translate("transactionWindow", "Number of Transactions: "))
         self.beef_pushbutton.setText(_translate("transactionWindow", "BEEF"))
         self.chicken_pushbutton.setText(_translate("transactionWindow", "CHICKEN"))
         self.pork_pushbutton.setText(_translate("transactionWindow", "PORK"))
