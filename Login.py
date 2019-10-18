@@ -149,7 +149,7 @@ class Ui_MainWindow(QMainWindow):
         self.background.setText(_translate("Dialog", "<html><head/><body><p><img src=\":/login prefix/login.jpg\"/></p></body></html>"))
         self.usernameInput.setPlaceholderText(_translate("Dialog", "Insert Username"))
         self.passwordInput.setPlaceholderText(_translate("Dialog", "Inser Password"))
-        self.usernameLabel.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">USERNAME</span></p></body></html>"))
+        self.usernameLabel.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; color:#ff2020;\">USERNAME</span></p></body></html>"))
         self.passwordLabel.setText(_translate("Dialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; color:#ff2020;\">PASSWORD</span></p></body></html>"))
         self.loginButton.setText(_translate("Dialog", "Log In"))
         self.signUpButton.setText(_translate("Dialog", "Sign Up"))

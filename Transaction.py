@@ -7,12 +7,9 @@ class Ui_transactionWindow:
 
     def __init__(self, login):
         self.login = login
-    
 
     def cell_was_clicked_inventory(self, row, column):
         self.inventory_cell_row = row
-
-    
 
     def cell_was_clicked_cart(self, row, column):
         self.cart_cell_row = row
@@ -37,28 +34,102 @@ class Ui_transactionWindow:
         with conn:
             cursor = conn.cursor()
             if self.selected == "beef":
-                query = "SELECT * FROM beef".format(self.products_table.item(self.inventory_cell_row, 0).text())
+                query = "SELECT * FROM beef WHERE Beef_Name = '{0}'".format(self.products_table.item(self.inventory_cell_row, 0).text())
             elif self.selected == "chicken":
-                query = "SELECT * FROM chicken".format(self.products_table.item(self.inventory_cell_row, 0).text())
+                query = "SELECT * FROM chicken WHERE Chicken_Name = '{0}'".format(self.products_table.item(self.inventory_cell_row, 0).text())
             elif self.selected == "pork":
-                query = "SELECT * FROM pork".format(self.products_table.item(self.inventory_cell_row, 0).text())
+                query = "SELECT * FROM pork WHERE Pork_Name = '{0}'".format(self.products_table.item(self.inventory_cell_row, 0).text())
+            cursor.execute(query)
+            result = cursor.fetchall()[0]
+            conn.commit()
+        return result
+
+    def checkIfExists(self, Name):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT * FROM cart"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            products = []
+            for product in result:
+                products.append(product[0])
+            conn.commit()
+            if Name in products:
+                return True
+            else:
+                return False
+
+    def incrementCartProduct(self, Name):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "UPDATE cart SET Stocks = IF(Stocks >= 0, Stocks + 1, 0) WHERE Name = '{0}'".format(Name)
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+
+    def insertCartProduct(self, product):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "INSERT INTO cart (Name, Prices, Stocks) VALUES ('{0}', {1}, 0)".format(product[0], product[1])
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+
+    def addToCart(self):
+        self.decrementProduct()
+        if self.checkIfExists(self.products_table.item(self.inventory_cell_row, 0).text()):
+            self.incrementCartProduct(self.products_table.item(self.inventory_cell_row, 0).text())
+        else:
+            self.insertCartProduct(self.getInventoryProduct())
+            self.incrementCartProduct(self.products_table.item(self.inventory_cell_row, 0).text())
+        self.refresh_itemTable()
+        self.refresh_purchaseTable()
+
+    def checkIfZero(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "SELECT Stocks FROM cart WHERE Name = '{0}'".format(self.orders_table.item(self.cart_cell_row, 0).text())
+            cursor.execute(query)
+            conn.commit()
+            if cursor.fetchone()[0] == 1:
+                return True
+            else:
+                return False
+
+    def incrementProduct(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            if self.selected == "beef":
+                query = "UPDATE beef SET Stocks = Stocks + 1 WHERE Beef_Name = '{0}'".format(self.orders_table.item(self.cart_cell_row, 0).text())
             cursor.execute(query)
             conn.commit()
         return
 
-    def addToCart(self):
-        self.decrementProduct()
-##        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
-##        with conn:
-##            cursor = conn.cursor()
-##            if self.selected == "beef":
-##                query = "SELECT * FROM {0} WHERE Beef_Name = '{1}'".format(self.selected, self.products_table.item(0, 0).text())
-##            cursor.execute(query)
-##            result = cursor.fetchall()[0]
-##            cursor.close()
-##            conn.commit()
-##        return
+    def decrementPurchaseProduct(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            if self.checkIfZero():
+                query = "DELETE FROM cart WHERE Name = '{0}'".format(self.orders_table.item(self.cart_cell_row, 0).text())
+                if self.cart_cell_row > 0:
+                    self.cart_cell_row -= 1
+            else:
+                query = "UPDATE cart SET Stocks = IF(Stocks > 0, Stocks - 1, 0) WHERE Name = '{0}'".format(self.orders_table.item(self.cart_cell_row, 0).text())
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+        return
+
+    def removeFromCart(self):
+        self.decrementPurchaseProduct()
+        self.incrementProduct()
         self.refresh_itemTable()
+        self.refresh_purchaseTable()
 
     def logout_function(self):
         self.login.usernameInput.setText("")
@@ -97,7 +168,6 @@ class Ui_transactionWindow:
         for i, column in enumerate(columns):
             self.orders_table.setItem(rowPosition, i, QtWidgets.QTableWidgetItem(str(column)))
 
-
     def refresh_itemTable(self):
         self.products_table.setRowCount(0)
         conn = pymysql.connect("localhost", "root", "", "meatshopdb")
@@ -117,13 +187,25 @@ class Ui_transactionWindow:
         conn = pymysql.connect("localhost", "root", "", "meatshopdb")
         with conn:
             cursor = conn.cursor()
-            query = "SELECT * FROM {0}".format(self.selected)
+            query = "SELECT * FROM cart"
             cursor.execute(query)
             conn.commit()
             result = cursor.fetchall()
             for row in result:
                 self.purchaseTable(row)
             cursor.close()
+        return
+
+    def submitPurchase(self):
+        conn = pymysql.connect("localhost", "root", "", "meatshopdb")
+        with conn:
+            cursor = conn.cursor()
+            query = "DELETE FROM cart"
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+            QMessageBox.about(QtWidgets.QMainWindow(), "Purchase", "Purchased successfully!")
+            self.refresh_purchaseTable()
         return
         
     def setupUi(self, transactionWindow):
@@ -249,6 +331,7 @@ class Ui_transactionWindow:
         
         self.orders_table = QtWidgets.QTableWidget(self.centralwidget)
         self.orders_table.setGeometry(QtCore.QRect(500, 120, 301, 341))
+        self.orders_table.cellClicked.connect(self.cell_was_clicked_cart)
         self.orders_table.setStyleSheet("QTableWidget  {background-color: rgb(255, 38, 38);\n"
 "                        border: none;\n"
 "                        color:rgb(255,255,255);\n"
@@ -300,7 +383,7 @@ class Ui_transactionWindow:
 "background-image: url(:/arr_right/Arrow_right.PNG);}")
         self.add_pushbutton.setObjectName("add_pushbutton")
 
-        self.remove_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.remove_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked=self.removeFromCart)
         self.remove_pushbutton.setGeometry(QtCore.QRect(410, 300, 91, 81))
 
         font = QtGui.QFont()
@@ -312,7 +395,7 @@ class Ui_transactionWindow:
 "background-image: url(:/arr_left/Arrow_left.PNG);}")
         self.remove_pushbutton.setObjectName("remove_pushbutton")
 
-        self.submit_pushbutton = QtWidgets.QPushButton(self.centralwidget)
+        self.submit_pushbutton = QtWidgets.QPushButton(self.centralwidget, clicked = self.submitPurchase)
         self.submit_pushbutton.setGeometry(QtCore.QRect(720, 70, 101, 41))
 
         font = QtGui.QFont()
@@ -362,6 +445,10 @@ class Ui_transactionWindow:
 
         self.retranslateUi(transactionWindow)
         QtCore.QMetaObject.connectSlotsByName(transactionWindow)
+
+        self.beefselected()
+        self.refresh_purchaseTable()
+        self.inventory_cell_row = 0
 
     def retranslateUi(self, transactionWindow):
         _translate = QtCore.QCoreApplication.translate
